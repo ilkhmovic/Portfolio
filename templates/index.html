@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock title %}
+{% block content %} 
+
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="{% url 'home' %}" class="logo">Amonov's Portfolio</a>
+                {% for category in categories %}
+                    <ul class="nav-links">
+                        <li><a href="#{{ category.name|lower }}">{{ category.name }}</a></li>
+                    </ul>
+                {% endfor %}
+                
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Salom, men <span style="color: var(--primary)">Ism Familiya</span></h1>
+                <p>Men veb-dizayner va dasturchiman. Zamonaviy va foydali veb-saytlar yaratishga ixtisoslashganman.</p>
+                <div class="hero-btns">
+                    <a href="#portfolio" class="btn">Ishlarimni ko'ring</a>
+                    <a href="#contact" class="btn btn-outline">Bog'lanish</a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <!-- Bu yerda rasm bo'lishi kerak -->
+            <div style="width: 100%; height: 400px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-radius: 50% 0 0 50%; display: flex; align-items: center; justify-content: center; color: var(--dark); font-size: 10rem;">
+                <i class="fas fa-code"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            {% for about_me in about %}
+            <div class="section-title">
+                <h2>Men Haqimda</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-image">
+                    <div style="width: 100%; height: 400px; overflow: hidden; background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);">
+                        {% if about_me.image %}
+                            <img src="{{ about_me.image.url }}" alt="Rasm" 
+                                style="width: 100%; height: 100%; object-fit: cover; object-position: top;">
+                        {% else %}
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: white;">
+                                <p>Rasm yo'q</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="about-text">
+                    <h3>{{ about_me.title }}</h3>
+                    <p>{{ about_me.description }}</p>
+                    <div class="skills">
+                        {% for skill in skills %}
+                            {% if skill.about_me.id == about_me.id %}
+                                <span class="skill">{{ skill.name }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            
+            <div class="section-title">
+                <h2>Xizmatlar</h2>
+            </div>
+            <div class="services-grid">
+                {% for service in services %}
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="{{ service.icon_class }}"></i>
+                    </div>
+                    <h3>{{ service.title }}</h3>
+                    <p>{{ service.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <div class="section-title">
+                <h2>Portfolio</h2>
+            </div>
+            <div class="portfolio-grid">
+                {% for portfel in portfels %}
+                <div class="portfolio-item">
+                    <!-- Bu yerda rasm bo'lishi kerak -->
+                    {% if portfel.image %}
+                            <img src="{{ portfel.image.url }}" alt="Rasm" 
+                                style="width: 100%; height: 100%; object-fit: cover; object-position: top;">
+                        {% else %}
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: white;">
+                                <p>Rasm yo'q</p>
+                            </div>
+                        {% endif %}
+                    <div class="portfolio-overlay">
+                        <h3>{{ portfel.title }}</h3>
+                        <p>{{ portfel.description }}</p>
+                        <div class="portfolio-links">
+                            {% if portfel.github_link %}
+                                <a href="{{ portfel.github_link }}" class="portfolio-link" target="_blank">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            {% endif %}
+                            {% if portfel.live_demo_link %}
+                                <a href="{{ portfel.live_demo_link }}" class="portfolio-link" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Aloqa</h2>
+                </div>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success" style="background: var(--primary); color: white; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center;">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h3>Manzil</h3>
+                                <p>
+                                    {% if contact_info and contact_info.address %}
+                                        {{ contact_info.address }}
+                                    {% else %}
+                                        Toshkent shahar, O'zbekiston
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h3>Telefon</h3>
+                                <p>
+                                    {% if contact_info and contact_info.author_phone %}
+                                        {{ contact_info.author_phone }}
+                                    {% else %}
+                                        +998 90 123 45 67
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h3>Email</h3>
+                                <p>
+                                    {% if contact_info and contact_info.author_email %}
+                                        {{ contact_info.author_email }}
+                                    {% else %}
+                                        info@example.com
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <div>
+                                <h3>Lavozim</h3>
+                                <p>
+                                    {% if contact_info and contact_info.position %}
+                                        {{ contact_info.position }}
+                                    {% else %}
+                                        Veb Dasturchi
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <form method="POST">
+                            {% csrf_token %}
+                            
+                            <!-- Ism -->
+                            <div class="form-group">
+                                <input type="text" name="name" class="form-control" placeholder="Ismingiz" required 
+                                    value="{{ form.name.value|default:'' }}">
+                                {% if form.name.errors %}
+                                    <div class="error">
+                                        {{ form.name.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Email -->
+                            <div class="form-group">
+                                <input type="email" name="email" class="form-control" placeholder="Email manzilingiz" required
+                                    value="{{ form.email.value|default:'' }}">
+                                {% if form.email.errors %}
+                                    <div class="error">
+                                        {{ form.email.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Telefon -->
+                            <div class="form-group">
+                                <input type="tel" name="phone" class="form-control" placeholder="Telefon raqamingiz"
+                                    value="{{ form.phone.value|default:'' }}">
+                                {% if form.phone.errors %}
+                                    <div class="error">
+                                        {{ form.phone.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Mavzu -->
+                            <div class="form-group">
+                                <input type="text" name="subject" class="form-control" placeholder="Mavzu" required
+                                    value="{{ form.subject.value|default:'' }}">
+                                {% if form.subject.errors %}
+                                    <div class="error">
+                                        {{ form.subject.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Xabar -->
+                            <div class="form-group">
+                                <textarea name="message" class="form-control" placeholder="Xabaringiz" required>{{ form.message.value|default:'' }}</textarea>
+                                {% if form.message.errors %}
+                                    <div class="error">
+                                        {{ form.message.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <button type="submit" class="btn">Xabar yuborish</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+   
+        
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="logo">Portfolio</div>
+                <div class="social-links">
+                    {% for social in socials %}
+                    <a href="{{ social.url }}" class="social-link"><i class="{{ social.icon_class }}"></i></a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 Portfolio. Barcha huquqlar himoyalangan.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelector('.nav-links').classList.remove('active');
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+{% endblock content %}
