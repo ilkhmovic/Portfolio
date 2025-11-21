@@ -23,7 +23,7 @@
     <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
-                <h1>Salom, men <span style="color: var(--primary)">Ism Familiya</span></h1>
+                <h1>Salom, men <span style="color: var(--primary)">Amonov Doston</span></h1>
                 <p>Men veb-dizayner va dasturchiman. Zamonaviy va foydali veb-saytlar yaratishga ixtisoslashganman.</p>
                 <div class="hero-btns">
                     <a href="#portfolio" class="btn">Ishlarimni ko'ring</a>
@@ -42,11 +42,12 @@
     <!-- About Section -->
     <section class="about" id="about">
         <div class="container">
-            {% for about_me in about %}
+            
             <div class="section-title">
                 <h2>Men Haqimda</h2>
             </div>
-            <div class="about-content">
+            {% for about_me in about %}
+            <div class="about-content" style="margin-bottom: 50px;">
                 <div class="about-image">
                     <div style="width: 100%; height: 400px; overflow: hidden; background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);">
                         {% if about_me.image %}
